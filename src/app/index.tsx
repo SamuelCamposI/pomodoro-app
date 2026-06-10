@@ -1,98 +1,114 @@
-import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import React from 'react';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 
-import { AnimatedIcon } from '@/components/animated-icon';
-import { HintRow } from '@/components/hint-row';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { WebBadge } from '@/components/web-badge';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
-
-function getDevMenuHint() {
-  if (Platform.OS === 'web') {
-    return <ThemedText type="small">use browser devtools</ThemedText>;
-  }
-  if (Device.isDevice) {
-    return (
-      <ThemedText type="small">
-        shake device or press <ThemedText type="code">m</ThemedText> in terminal
-      </ThemedText>
-    );
-  }
-  const shortcut = Platform.OS === 'android' ? 'cmd+m (or ctrl+m)' : 'cmd+d';
+export default function App() {
   return (
-    <ThemedText type="small">
-      press <ThemedText type="code">{shortcut}</ThemedText>
-    </ThemedText>
+    <View style={styles.container}>
+      
+      {/* Encabezado */}
+      <View style={styles.headerContainer}>
+        <Text style={styles.title}>Modo Enfoque</Text>
+      </View>
+
+      {/* Sección del Cronómetro Pomodoro */}
+      <View style={styles.timerContainer}>
+        <Text style={styles.timerText}>25:00</Text>
+        <Text style={styles.statusText}>Listo para trabajar</Text>
+      </View>
+
+      {/* Botones de Control */}
+      <View style={styles.controlsContainer}>
+        <TouchableOpacity style={styles.buttonPrimary}>
+          <Text style={styles.buttonText}>Iniciar</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.buttonSecondary}>
+          <Text style={styles.buttonTextSecondary}>Reiniciar</Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* Sección del Calendario (Placeholder por ahora) */}
+      <View style={styles.calendarContainer}>
+        <Text style={styles.calendarText}>📅 Aquí integraremos el calendario</Text>
+      </View>
+
+    </View>
   );
 }
 
-export default function HomeScreen() {
-  return (
-    <ThemedView style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
-        <ThemedView style={styles.heroSection}>
-          <AnimatedIcon />
-          <ThemedText type="title" style={styles.title}>
-            Welcome to&nbsp;Expo
-          </ThemedText>
-        </ThemedView>
-
-        <ThemedText type="code" style={styles.code}>
-          get started
-        </ThemedText>
-
-        <ThemedView type="backgroundElement" style={styles.stepContainer}>
-          <HintRow
-            title="Try editing"
-            hint={<ThemedText type="code">src/app/index.tsx</ThemedText>}
-          />
-          <HintRow title="Dev tools" hint={getDevMenuHint()} />
-          <HintRow
-            title="Fresh start"
-            hint={<ThemedText type="code">npm run reset-project</ThemedText>}
-          />
-        </ThemedView>
-
-        {Platform.OS === 'web' && <WebBadge />}
-      </SafeAreaView>
-    </ThemedView>
-  );
-}
-
+// Aquí definimos los estilos (similar a CSS pero en un objeto de JavaScript)
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    flexDirection: 'row',
-  },
-  safeArea: {
-    flex: 1,
-    paddingHorizontal: Spacing.four,
+    flex: 1, // Ocupa toda la pantalla
+    backgroundColor: '#FAFAFA',
     alignItems: 'center',
-    gap: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.three,
-    maxWidth: MaxContentWidth,
+    justifyContent: 'space-evenly', // Distribuye los elementos uniformemente
+    padding: 20,
   },
-  heroSection: {
+  headerContainer: {
     alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    gap: Spacing.four,
   },
   title: {
-    textAlign: 'center',
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#333',
   },
-  code: {
-    textTransform: 'uppercase',
+  timerContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 250,
+    height: 250,
+    borderRadius: 125, // Lo hace un círculo
+    backgroundColor: '#FFFFFF',
+    elevation: 5, // Sombra en Android
+    shadowColor: '#000', // Sombra en iOS
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
   },
-  stepContainer: {
-    gap: Spacing.three,
-    alignSelf: 'stretch',
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.four,
-    borderRadius: Spacing.four,
+  timerText: {
+    fontSize: 64,
+    fontWeight: 'bold',
+    color: '#E53935', // Rojo estilo Pomodoro
   },
+  statusText: {
+    fontSize: 16,
+    color: '#666',
+    marginTop: 10,
+  },
+  controlsContainer: {
+    flexDirection: 'row',
+    gap: 15,
+  },
+  buttonPrimary: {
+    backgroundColor: '#E53935',
+    paddingVertical: 15,
+    paddingHorizontal: 30,
+    borderRadius: 25,
+  },
+  buttonSecondary: {
+    backgroundColor: '#E0E0E0',
+    paddingVertical: 15,
+    paddingHorizontal: 30,
+    borderRadius: 25,
+  },
+  buttonText: {
+    color: '#FFF',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  buttonTextSecondary: {
+    color: '#333',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  calendarContainer: {
+    width: '100%',
+    padding: 20,
+    backgroundColor: '#FFF',
+    borderRadius: 15,
+    alignItems: 'center',
+  },
+  calendarText: {
+    color: '#888',
+  }
 });
