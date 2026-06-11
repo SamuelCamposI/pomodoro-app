@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
+import { Calendar } from 'react-native-calendars';
+
+// Obtenemos el ancho de la pantalla del dispositivo
+const screenWidth = Dimensions.get('window').width;
 
 export default function App() {
   // 1. La "memoria" de nuestra app
@@ -83,8 +87,43 @@ export default function App() {
         </TouchableOpacity>
       </View>
 
-      <View style={styles.calendarContainer}>
-        <Text style={styles.calendarText}>📅 Aquí integraremos el calendario</Text>
+      {/* Sección del Calendario */}
+      <View style={styles.swipeArea}>
+        <ScrollView
+          horizontal
+          pagingEnabled
+          showsHorizontalScrollIndicator={false} // Oculta la barrita de desplazamiento
+        >
+
+          {/* Página 1: Calendario */}
+          <View style={[styles.page, { width: screenWidth }]}>
+            <View style={styles.card}>
+              <Calendar
+                onDayPress={day => console.log('Día:', day)}
+                theme={{
+                  todayTextColor: '#E53935',
+                  arrowColor: '#E53935',
+                }}
+                hideExtraDays={true}
+              />
+            </View>
+          </View>
+
+          {/* Página 2: Reproductor de Música */}
+          <View style={[styles.page, { width: screenWidth }]}>
+            <View style={styles.card}>
+              <Text style={styles.musicTitle}>🎵 Reproductor</Text>
+              <Text style={styles.musicSubtitle}>Lofi Hip Hop Radio</Text>
+
+              <View style={styles.musicControls}>
+                <TouchableOpacity style={styles.musicBtn}><Text>⏮️</Text></TouchableOpacity>
+                <TouchableOpacity style={styles.musicBtnPlay}><Text style={{ color: '#FFF' }}>▶️</Text></TouchableOpacity>
+                <TouchableOpacity style={styles.musicBtn}><Text>⏭️</Text></TouchableOpacity>
+              </View>
+            </View>
+          </View>
+
+        </ScrollView>
       </View>
 
     </View>
@@ -99,6 +138,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-evenly', // Distribuye los elementos uniformemente
     padding: 20,
+  },
+  containerWorking: {
+    backgroundColor: '#040505', // o
   },
   containerBreak: {
     backgroundColor: '#E8F5E9', // Un tono verde muy suave para indicar descanso
@@ -171,15 +213,54 @@ const styles = StyleSheet.create({
     color: '#333',
     fontSize: 16,
     fontWeight: 'bold',
-  },
-  calendarContainer: {
+  },// Estilos de la nueva zona deslizable
+  swipeArea: {
+    flex: 1, // Toma el resto del espacio disponible en la pantalla
     width: '100%',
-    padding: 20,
+  },
+  page: {
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    paddingHorizontal: 20, // Margen lateral para que las tarjetas no peguen en la orilla
+  },
+  card: {
+    width: '100%',
     backgroundColor: '#FFF',
     borderRadius: 15,
-    alignItems: 'center',
+    padding: 20,
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
   },
-  calendarText: {
-    color: '#888',
+  // Estilos temporales del reproductor
+  musicTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 5,
+  },
+  musicSubtitle: {
+    fontSize: 14,
+    color: '#666',
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  musicControls: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 20,
+  },
+  musicBtn: {
+    padding: 15,
+    backgroundColor: '#F0F0F0',
+    borderRadius: 25,
+  },
+  musicBtnPlay: {
+    padding: 20,
+    backgroundColor: '#333',
+    borderRadius: 30,
   }
 });
